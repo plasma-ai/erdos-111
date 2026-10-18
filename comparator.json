@@ -1,0 +1,6 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": ["Erdos111.countably_colorable_of_linear", "Erdos111.tendsto_of_not_countably_colorable", "Erdos111.erdos_111"],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"]
+}

@@ -1,0 +1,23 @@
+name = "Erdos111"
+defaultTargets = ["Erdos111", "Challenge", "Solution"]
+
+# No silently-introduced implicit binders anywhere in the corpus.
+[leanOptions]
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.35.0"
+
+[[lean_lib]]
+name = "Erdos111"
+globs = ["Erdos111.+"]
+
+[[lean_lib]]
+name = "Challenge"
+roots = ["Challenge"]
+
+[[lean_lib]]
+name = "Solution"
+roots = ["Solution"]

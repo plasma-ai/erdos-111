@@ -1,0 +1,137 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Erdős Problem 111: bipartizing finite subgraphs of uncountably chromatic graphs"
+  description: >-
+    A Lean proof that for every C ≥ 0, a graph whose finite subgraphs on m
+    vertices can each be made bipartite by deleting at most Cm edges has
+    countable chromatic number. Hence h_G(n)/n → ∞ for every graph G that is
+    not countably colorable, in particular for every graph of chromatic
+    number ℵ₁. This answers Erdős Problem 111.
+  authors:
+    - "Jacob Parish"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Jacob Parish"
+
+classification:
+  arxiv: ["math.CO", "math.LO"]
+  msc2020: ["05C15", "05C63", "03E05"]
+
+sources:
+  - title: "Erdős Problem #111"
+    authors: ["Thomas F. Bloom"]
+    id: "https://www.erdosproblems.com/111"
+    relationship: "background"
+    note: >-
+      Accessed 2026-10-17, when the problem was listed as open. Bloom's
+      catalog entry supplies the problem number and statement.
+  - title: "On the combinatorial problems which I would most like to see solved"
+    authors: ["P. Erdős"]
+    id: "Combinatorica 1 (1981), 25–42"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      States the question and conjectures that the upper bound of Erdős,
+      Hajnal and Szemerédi can be lowered to n^{1+ε} for every ε > 0.
+  - title: "On almost bipartite large chromatic graphs"
+    authors: ["P. Erdős", "A. Hajnal", "E. Szemerédi"]
+    id: "Annals of Discrete Mathematics 12 (1982), 117–123"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Source of the question. Theorem 3 gives graphs of arbitrarily large
+      chromatic number with h_G(n) ≤ 2n^{3/2}.
+  - title: "Countable colorings of linear graphs (blueprint)"
+    authors: ["Plasma AI"]
+    id: "https://github.com/plasma-ai/erdos-111/blob/main/blueprint/proof.md"
+    type: "original-proof"
+    relationship: "formalizes"
+    note: >-
+      The prose proof accompanying this repository, in blueprint/; not
+      refereed. It follows the Lean development module by module.
+
+status:
+  scope: >-
+    Comparator checks three theorems, with no hypotheses beyond their
+    statements: every C-linear graph has a coloring by ℕ
+    (countably_colorable_of_linear), h_G(n)/n → ∞ for every graph with no
+    coloring by ℕ (tendsto_of_not_countably_colorable), and h_G(n)/n → ∞ for
+    every graph of chromatic number ℵ₁ (erdos_111). Vertex types range over
+    an arbitrary universe. The first, open-ended question of the problem,
+    the exact behaviour of h_G(n), is not addressed beyond the divergence.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Quot.sound", "Classical.choice"]
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["claude-opus-5-5"]
+      framework: "Claude Code"
+      tool_setup: "Lean 4.35.0, Mathlib, Lake, and Comparator."
+      prompting_notes: >-
+        Asked to formalize the proof of the problem in this repository's
+        layout. Claude Code chose a route suited to Mathlib: closure chains
+        in place of elementary submodels, a chain starting from the empty
+        set, ultrafilter limits of finite-dimensional marginals with a local
+        Kolmogorov extension in place of weak-star compactness, and a finite
+        minimax lemma. It wrote the challenge statements, the skeleton of
+        every module with its statements, and the final assembly, and
+        reviewed and integrated the proofs. Parallel subagents wrote the
+        proofs; one skeleton statement found false by a subagent was
+        corrected.
+  notes: >-
+    Claude Opus 5.5 produced the Lean formalization in Claude Code under
+    human direction.
+
+fidelity:
+  divergences: >-
+    No known divergence from the question. h G n is the supremum, over
+    subgraphs H of G with n vertices, of the least number of edges of H
+    whose deletion leaves H bipartite (IsBipartite); it is 0 when G has fewer than n
+    vertices, which does not occur for the graphs concerned. The chromatic
+    number is the least cardinality of a color set in the universe of the
+    vertex type. The Lean proof follows the route of the blueprint, which
+    reorganizes the original argument (closure chains instead of elementary
+    submodels, compactness of laws instead of coherent projective limits)
+    without changing its mathematics.
+
+review:
+  status: "self-assessed"
+  reviewers: []
+  notes: >-
+    The development builds on Lean v4.35.0, and the three compared theorems
+    depend only on propext, Classical.choice, and Quot.sound. Comparator,
+    from the toolchain's lake comparator, accepts them against
+    Challenge.lean with the Lean, NanoDa and con-ron kernels. It ran on macOS
+    without its bwrap sandbox. No independent review of the formalization
+    has been recorded.
+
+alignment:
+  namespace: "Erdos111"
+  statements:
+    - source: "Countable colorings of linear graphs (blueprint), the theorem"
+      lean: "Erdos111.countably_colorable_of_linear"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        For real C, a graph in which every subgraph H with finitely many
+        vertices has bipartizationNumber H ≤ C · |V(H)| has a proper coloring
+        by ℕ.
+    - source: "Erdős Problem 111, for graphs that are not countably colorable"
+      lean: "Erdos111.tendsto_of_not_countably_colorable"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        If G has no proper coloring by ℕ, then h G n / n tends to infinity.
+        This is stronger than the problem's question.
+    - source: "Erdős Problem 111, second question"
+      lean: "Erdos111.erdos_111"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        If chromaticCardinal G = ℵ₁, then h G n / n tends to infinity.
+
+acknowledgements: "Mathlib and the authors of the cited mathematical sources."
