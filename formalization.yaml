@@ -4,11 +4,12 @@ version: "v0.4"
 project:
   name: "Erdős Problem 111: bipartizing finite subgraphs of uncountably chromatic graphs"
   description: >-
-    A Lean proof that for every C ≥ 0, a graph whose finite subgraphs on m
+    A Lean proof that for every real C, a graph whose finite subgraphs on m
     vertices can each be made bipartite by deleting at most Cm edges has
     countable chromatic number. Hence h_G(n)/n → ∞ for every graph G that is
     not countably colorable, in particular for every graph of chromatic
-    number ℵ₁. This answers Erdős Problem 111.
+    number ℵ₁. This answers the second question of Erdős Problem 111 in the
+    affirmative.
   authors:
     - "Jacob Parish"
   license: "Apache-2.0"
@@ -29,28 +30,66 @@ sources:
       catalog entry supplies the problem number and statement.
   - title: "On the combinatorial problems which I would most like to see solved"
     authors: ["P. Erdős"]
-    id: "Combinatorica 1 (1981), 25–42"
+    id: "https://doi.org/10.1007/BF02579174"
     type: "paper"
     relationship: "background"
     note: >-
-      States the question and conjectures that the upper bound of Erdős,
-      Hajnal and Szemerédi can be lowered to n^{1+ε} for every ε > 0.
+      Poses, as a problem of Hajnal, Szemerédi and Erdős, the finite-density
+      form of the question: if G has chromatic number at least ℵ₁, then for
+      every c some finite subgraph of G on m vertices cannot be made
+      bipartite by deleting cm edges. The three also conjecture that for
+      every ε > 0 some graph of chromatic number ℵ₁ has h_G(n) ≤ n^{1+ε}.
   - title: "On almost bipartite large chromatic graphs"
     authors: ["P. Erdős", "A. Hajnal", "E. Szemerédi"]
-    id: "Annals of Discrete Mathematics 12 (1982), 117–123"
+    id: "https://doi.org/10.1016/S0304-0208(08)73497-2"
     type: "paper"
     relationship: "background"
     note: >-
-      Source of the question. Theorem 3 gives graphs of arbitrarily large
-      chromatic number with h_G(n) ≤ 2n^{3/2}.
-  - title: "Countable colorings of linear graphs (blueprint)"
+      Defines h_G (Definition 3.1, as f^3), derives h_G(n) ≫ n for every
+      graph of chromatic number ℵ₁, and proves in Theorem 3 that graphs of
+      arbitrarily large chromatic number have h_G(n) ≤ 2n^{3/2}. It does not
+      ask whether h_G(n)/n → ∞.
+  - title: "Some problems on finite and infinite graphs"
+    authors: ["P. Erdős"]
+    id: "https://doi.org/10.1090/conm/065/891250"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Problem 7 (p. 225) states the limit conjecture: h_G(n)/n → ∞ for every
+      graph G of chromatic number ℵ₁.
+  - title: "Erdős problem #111: finite-density reduction and a sharp obstruction for the EHS shift witness"
+    id: "https://www.erdosproblemaday.com/report/111"
+    relationship: "other"
+    note: >-
+      A working report on Erdős Problem a Day, dated 2026-07-26, that does
+      not solve the problem. Its Section 2 proves, for graphs of chromatic
+      number ℵ₁, the reduction of the limit to the finite-density form of
+      the question, by the same countable-deletion and packing argument as
+      Erdos111/Reduction.lean. The argument here, which covers every graph
+      that is not countably colorable, does not rely on it.
+  - title: "Graphs whose finite subgraphs have linear bipartization cost are countably colorable"
     authors: ["Plasma AI"]
     id: "https://github.com/plasma-ai/erdos-111/blob/main/blueprint/proof.md"
     type: "original-proof"
-    relationship: "formalizes"
+    relationship: "other"
     note: >-
       The prose proof accompanying this repository, in blueprint/; not
       refereed. It follows the Lean development module by module.
+
+related_formalizations:
+  - id: "https://github.com/google-deepmind/formal-conjectures/pull/3785"
+    relationship: "independent"
+    note: >-
+      An open pull request, unmerged on 2026-10-17, that states Problem 111
+      without a proof. Its h_G maximizes over induced subgraphs.
+      Challenge.lean neither imports nor copies it.
+  - id: "https://github.com/google-deepmind/formal-conjectures/pull/6635"
+    relationship: "independent"
+    note: >-
+      An open pull request, unmerged on 2026-10-17, that states Problem 111
+      without a proof. Challenge.lean neither imports nor copies it.
+      erdos_111, for vertex types in Type, implies its statement, as checked
+      in Lean.
 
 status:
   scope: >-
@@ -68,6 +107,32 @@ status:
 automation:
   methods:
     - method: "agent"
+      models: ["gpt-6-astra"]
+      framework: "Codex"
+      tool_setup: >-
+        Unattended research runs, reading the problem's sources and Plasma
+        AI's research notes, without Lean.
+      prompting_notes: >-
+        The runs asked for a full solution of Erdős Problem 111, with GPT-6
+        Astra and Claude Opus 5.5 working in alternating steps over two
+        rounds. GPT-6 Astra prepared each round, attacked the open steps and
+        recorded the results. Among them, it proved the countable partition
+        of unit vectors in a Hilbert space of any dimension (blueprint
+        Proposition C) and the bound on the expected extension costs of
+        rooted patterns (the invariant J).
+    - method: "agent"
+      models: ["claude-opus-5-5"]
+      framework: "Claude Code"
+      tool_setup: >-
+        The same research runs, in the steps that propose and develop
+        constructions, without Lean.
+      prompting_notes: >-
+        In the last of its steps, Claude Opus 5.5 wrote the complete proof of
+        the countable-coloring theorem: laws on sign assignments built along
+        a chain of elementary submodels, forcing each vertex with an infinite
+        trace to take the opposite of its derived sign, followed by the
+        Hilbert-space classes and induction on cardinality.
+    - method: "agent"
       models: ["claude-opus-5-5"]
       framework: "Claude Code"
       tool_setup: "Lean 4.35.0, Mathlib, Lake, and Comparator."
@@ -81,57 +146,81 @@ automation:
         every module with its statements, and the final assembly, and
         reviewed and integrated the proofs. Parallel subagents wrote the
         proofs; one skeleton statement found false by a subagent was
-        corrected.
+        corrected. The blueprint, blueprint/proof.md, was written with Claude
+        Code from Plasma AI's unpublished write-up of the proof.
   notes: >-
+    GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code found the proof.
     Claude Opus 5.5 produced the Lean formalization in Claude Code under
     human direction.
 
 fidelity:
   divergences: >-
-    No known divergence from the question. h G n is the supremum, over
-    subgraphs H of G with n vertices, of the least number of edges of H
-    whose deletion leaves H bipartite (IsBipartite); it is 0 when G has fewer than n
-    vertices, which does not occur for the graphs concerned. The chromatic
-    number is the least cardinality of a color set in the universe of the
-    vertex type. The Lean proof follows the route of the blueprint, which
-    reorganizes the original argument (closure chains instead of elementary
-    submodels, compactness of laws instead of coherent projective limits)
-    without changing its mathematics.
+    No known divergence from the question affects the results. h G n is the
+    supremum, over subgraphs H of G with n vertices, of the least number of
+    edges of H whose deletion leaves H bipartite (IsBipartite); it is 0 when G
+    has fewer than n vertices, which does not occur for the graphs concerned.
+    Erdős, Hajnal and Szemerédi (1982, Definition 3.1) maximize over induced
+    subgraphs instead; the values agree, because deleting edges from a
+    subgraph never raises its bipartization number. The n = 0 term of
+    h G n / n is 0 / 0 = 0, which does not affect the limit.
+    bipartizationNumber is 0 for a subgraph with infinitely many edges,
+    because Set.ncard of an infinite set is 0; the statements apply it only to
+    subgraphs with finitely many vertices. The chromatic number is the least
+    cardinality of a color set in the universe of the vertex type. The
+    finite-density form of the question in Erdős (1981) asks, for G of
+    chromatic number at least ℵ₁, that h_G(n)/n be unbounded:
+    tendsto_of_not_countably_colorable has the same hypothesis and a stronger
+    conclusion, and countably_colorable_of_linear is the contrapositive of
+    that form. h and chromaticCardinal equal formal-conjectures'
+    maxSubgraphEdgeDistToBipartite and chromaticCardinal at commit 7db2ea3b91,
+    and erdos_111, for vertex types in Type, implies the statement of
+    formal-conjectures pull request #6635; these agreements were checked in
+    Lean. The Lean proof follows the route of the blueprint, which reorganizes
+    the argument of Plasma AI's unpublished write-up with the simplifications
+    listed in blueprint §7: closure chains instead of elementary submodels,
+    and ultrafilter limits of finite-dimensional marginals instead of
+    weak-star compactness.
 
 review:
   status: "self-assessed"
   reviewers: []
   notes: >-
-    The development builds on Lean v4.35.0, and the three compared theorems
+    The human project lead checked the statements in Challenge.lean against
+    the problem and confirmed that they formalize the claimed result. The
+    development builds on Lean v4.35.0, and the three compared theorems
     depend only on propext, Classical.choice, and Quot.sound. Comparator,
     from the toolchain's lake comparator, accepts them against
     Challenge.lean with the Lean, NanoDa and con-ron kernels. It ran on macOS
-    without its bwrap sandbox. No independent review of the formalization
-    has been recorded.
+    without its bwrap sandbox. An internal independent review and a separate
+    grade, each by GPT-6 Astra in Codex, passed the informal argument; they
+    did not cover the blueprint or the Lean. No independent review of the
+    formalization has been recorded.
 
 alignment:
   namespace: "Erdos111"
   statements:
-    - source: "Countable colorings of linear graphs (blueprint), the theorem"
+    - source: "Graphs whose finite subgraphs have linear bipartization cost are countably colorable"
       lean: "Erdos111.countably_colorable_of_linear"
       module: "Solution"
       status: "proved"
       note: >-
         For real C, a graph in which every subgraph H with finitely many
         vertices has bipartizationNumber H ≤ C · |V(H)| has a proper coloring
-        by ℕ.
-    - source: "Erdős Problem 111, for graphs that are not countably colorable"
+        by ℕ. This is the contrapositive of the finite-density form of the
+        question in Erdős (1981).
+    - source: "Erdős (1981), the question for graphs of chromatic number at least ℵ₁"
       lean: "Erdos111.tendsto_of_not_countably_colorable"
       module: "Solution"
       status: "proved"
       note: >-
         If G has no proper coloring by ℕ, then h G n / n tends to infinity.
-        This is stronger than the problem's question.
+        Erdős (1981) asks only that h_G(n)/n be unbounded; this is stronger.
     - source: "Erdős Problem 111, second question"
       lean: "Erdos111.erdos_111"
       module: "Solution"
       status: "proved"
       note: >-
         If chromaticCardinal G = ℵ₁, then h G n / n tends to infinity.
+        Erdős (1987, Problem 7) states this limit conjecture.
 
 acknowledgements: "Mathlib and the authors of the cited mathematical sources."
