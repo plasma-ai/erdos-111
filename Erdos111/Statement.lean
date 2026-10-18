@@ -21,7 +21,8 @@ universe u
 
 namespace Erdos111
 
-/-- The least number of edges whose deletion leaves the subgraph `H` bipartite. -/
+/-- The least number of edges whose deletion leaves the subgraph `H` bipartite, for `H`
+with finitely many vertices (the only case used below). -/
 noncomputable def bipartizationNumber {V : Type*} {G : SimpleGraph V} (H : G.Subgraph) : ℕ :=
   sInf {k : ℕ | ∃ D ⊆ H.edgeSet, D.ncard = k ∧ (H.deleteEdges D).coe.IsBipartite}
 
