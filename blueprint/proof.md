@@ -1,8 +1,11 @@
 # Blueprint: countable colorings of linear graphs
 
-This document proves, in prose, the three theorems that Comparator checks, in
-the order the Lean development proves them. Each section names the module and
-the Lean declarations it describes. The argument is Plasma AI's.
+This document proves, in prose, the three theorems that Comparator checks,
+following the Lean development module by module. Each section names the module
+and the Lean declarations it describes. The argument is Plasma AI's. This
+document was written with Claude Code from Plasma AI's unpublished write-up of
+the proof, which the rest of it calls the original argument; §7 lists how the
+two differ.
 
 **Conventions.** Graphs are simple. A *sign assignment* is `σ : V → Bool`; an
 edge is *monochromatic* under `σ` when its two ends get the same sign. For a
@@ -93,8 +96,8 @@ ordinals `ξ`, with these properties:
 `exists_chain` builds one by transfinite recursion. Enumerate `V` along the
 ordinals below `(#V).ord`, and at `ξ + 1` close `N ξ` together with the
 `ξ`-th vertex. This gives `#(N ξ) ≤ max ξ.card ℵ₀`. Using the initial
-ordinal of `#V`, rather than a chain of length `cf #V`, avoids any case split
-on singular cardinals.
+ordinal of `#V`, rather than a chain of length `cf #V`, avoids choosing a cover
+of `V` by `cf #V` smaller sets.
 
 **Layers and traces.**
 
@@ -378,21 +381,29 @@ the triple (class, greedy color, color in its layer):
 The original argument used a chain of elementary submodels of `H(θ)` of
 length `cf #V`, starting from a nonempty model. It needed a compactness
 construction for `J` at the first model and Radon measures with weak-star
-compactness. The Lean route makes these changes:
+compactness. The labels Lemma D, Lemma S, Proposition L and Lemma T follow
+the original. There, Proposition C is a coloring theorem whose proof contains
+the partition that §6 calls Proposition C. The Lean route makes these changes:
 
 - **Closure.** Closure over a set replaces elementary submodels, since
   replication is all the argument uses.
 - **The chain.** The chain starts from `∅`, so `J` holds there for every
-  law. It has length `(#V).ord`, so no case split on cofinality is needed.
+  law, and the original's construction of a law at the first model is not
+  needed. It has length `(#V).ord` and enumerates `V`, so no cover of `V` by
+  `cf #V` smaller sets has to be chosen.
 - **Laws.** Laws live on the product σ-algebra. Compactness is replaced by
   ultrafilter limits of finite-dimensional marginals plus Kolmogorov
   extension for Boolean coordinates.
 - **The induction.** The induction along the chain carries a proposition,
   not a coherent family of measures, because every condition passes to
   ultrafilter limits.
+- **Lemma D.** Its proof works along any injective enumeration of infinitely
+  many trace neighbours, instead of a countable set of trace neighbours on
+  which the expected minority is maximal.
 - **The key inequality.** It treats real weights with `⌈k ρ_i⌉` copies. Its
   pointwise lower bound splits on whether every forced root keeps its forced
   sign, instead of arguing about minimizers.
-- **Lemma T.** It needs only finite trace energy at each vertex. The coloring
-  inside a class is greedy along the layers, so de Bruijn–Erdős compactness
-  is not used.
+- **Lemma S.** It concludes that every new vertex with an infinite trace has
+  trace energy at most `C`. The original concludes that the new vertex
+  almost surely takes its forced sign, and derives the trace bound from that
+  in Proposition L.
