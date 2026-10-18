@@ -8,7 +8,7 @@ This Lean 4 project concerns [Erdős Problem 111](https://www.erdosproblems.com/
 
 The divergence is of the whole sequence, not along a subsequence. No rate comes with it.
 
-The proof is Plasma AI's. Two AI models found it, working in alternating steps: GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code. Claude Opus 5.5 wrote the complete proof. An internal independent review and a separate grade, both by GPT-6 Astra, passed the argument. The [blueprint](blueprint/proof.md), written with Claude Code from Plasma AI's unpublished write-up of the proof, states it in prose, following the Lean development module by module. Claude Opus 5.5 wrote the Lean formalization in Claude Code under human direction, and the project lead checked the statements in `Challenge.lean` against the problem. `formalization.yaml` records the role of each model.
+The proof is Plasma AI's. Two AI models found it, working in alternating steps: GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code. Claude Opus 5.5 wrote the complete proof, and GPT-6 Astra then checked it and revised it, making its measure-theoretic and limit arguments explicit. An internal independent review and a separate grade, both by GPT-6 Astra, passed the argument. The [blueprint](blueprint/proof.md), written with Claude Code from Plasma AI's unpublished write-up of the proof, states it in prose, following the Lean development module by module. Claude Opus 5.5 wrote the Lean formalization in Claude Code under human direction, and the project lead checked the statements in `Challenge.lean` against the problem. `formalization.yaml` records the role of each model.
 
 ## The argument
 

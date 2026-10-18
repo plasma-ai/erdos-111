@@ -110,8 +110,9 @@ automation:
       models: ["gpt-6-astra"]
       framework: "Codex"
       tool_setup: >-
-        Unattended research runs, reading the problem's sources and Plasma
-        AI's research notes, without Lean.
+        Unattended research runs with shell access. They read the problem's
+        sources, papers fetched from the web and Plasma AI's research notes,
+        and ran small Python experiments, without Lean.
       prompting_notes: >-
         The runs asked for a full solution of Erdős Problem 111, with GPT-6
         Astra and Claude Opus 5.5 working in alternating steps over two
@@ -119,19 +120,24 @@ automation:
         recorded the results. Among them, it proved the countable partition
         of unit vectors in a Hilbert space of any dimension (blueprint
         Proposition C) and the bound on the expected extension costs of
-        rooted patterns (the invariant J).
+        rooted patterns (the invariant J). In the last round it checked the
+        complete proof written by Claude Opus 5.5 and revised it, making
+        explicit the construction of laws on arbitrary products, the chains
+        for singular cardinals and the order of limits in the successor
+        step.
     - method: "agent"
       models: ["claude-opus-5-5"]
       framework: "Claude Code"
       tool_setup: >-
         The same research runs, in the steps that propose and develop
-        constructions, without Lean.
+        constructions, with shell access and web search, without Lean.
       prompting_notes: >-
-        In the last of its steps, Claude Opus 5.5 wrote the complete proof of
-        the countable-coloring theorem: laws on sign assignments built along
-        a chain of elementary submodels, forcing each vertex with an infinite
-        trace to take the opposite of its derived sign, followed by the
-        Hilbert-space classes and induction on cardinality.
+        In the last of its steps, Claude Opus 5.5 wrote the first complete
+        version of the proof of the countable-coloring theorem: laws on sign
+        assignments built along a chain of elementary submodels, forcing each
+        vertex with an infinite trace to take the opposite of its derived
+        sign, followed by the Hilbert-space classes and induction on
+        cardinality.
     - method: "agent"
       models: ["claude-opus-5-5"]
       framework: "Claude Code"
