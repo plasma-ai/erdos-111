@@ -65,7 +65,9 @@ theorem monoCount_image_sym2Map {E : Finset (Sym2 V)} {φ : V → V}
     monoCount (E.image (Sym2.map φ)) τ = monoCount E (τ ∘ φ) := by
   unfold monoCount
   rw [Finset.filter_image,
-    Finset.card_image_of_injOn (hφ.mono fun x hx => by simp at hx ⊢; exact hx.1)]
+    Finset.card_image_of_injOn (hφ.mono fun x hx => by
+      simp only [Finset.coe_filter, Set.mem_ofPred_eq, SetLike.mem_coe] at hx ⊢
+      exact hx.1)]
   congr 1
   refine Finset.filter_congr fun e _ => ?_
   induction e using Sym2.ind with
@@ -137,10 +139,11 @@ theorem exists_copy {G : SimpleGraph V} {M N : Set V} (hMN : ClosedOver G M N)
 /-- Finitely many patterns over `N` have copies in `N` avoiding `M` and a finite `D ⊆ N`,
 with pairwise disjoint images of their new vertices. -/
 theorem exists_copies {G : SimpleGraph V} {M N : Set V} (hMN : ClosedOver G M N)
-    {ι : Type*} [Fintype ι] (Q : ι → Pattern V) (hQ : ∀ j, (Q j).IsOver G N) {D : Finset V}
+    {ι : Type*} [Finite ι] (Q : ι → Pattern V) (hQ : ∀ j, (Q j).IsOver G N) {D : Finset V}
     (hD : ↑D ⊆ N) :
     ∃ φ : ι → V → V, (∀ j, IsCopy G M N D (Q j) (φ j)) ∧
       ∀ j j', j ≠ j' → ∀ v ∈ (Q j).S, ∀ v' ∈ (Q j').S, φ j v ≠ φ j' v' := by
+  have := Fintype.ofFinite ι
   suffices h : ∀ T : Finset ι, ∃ φ : ι → V → V,
       (∀ j ∈ T, IsCopy G M N D (Q j) (φ j)) ∧
       ∀ j ∈ T, ∀ j' ∈ T, j ≠ j' →
@@ -471,19 +474,21 @@ theorem le_extCost_starCopy {G : SimpleGraph V} {C : ℝ≥0} {M N X : Set V}
             refine Finset.mem_filter.2 ⟨?_, ?_⟩
             · simp only [hQ, starCopy, Finset.mem_union, Finset.mem_biUnion, Finset.mem_image]
               exact Or.inl ⟨y, hy, n, hnL, rfl⟩
-            · show τ y = τ (d.a y n)
+            · change τ y = τ (d.a y n)
               rw [hyτ', hτM _ (d.adj_mem y hyX n).2, hn]
     have hbad : ((Finset.range L).filter fun n => ¬ω (d.a y n) = d.s y ω).card ≤
         {n | ω (d.a y n) ≠ d.s y ω}.ncard := by
       rw [← Set.ncard_coe_finset]
-      exact Set.ncard_le_ncard (fun n hn => by simp at hn; exact hn.2) (hfin y hy)
+      refine Set.ncard_le_ncard (fun n hn => ?_) (hfin y hy)
+      simp only [Finset.coe_filter, Finset.mem_range, Set.mem_ofPred_eq] at hn
+      exact hn.2
     have hsplit := Finset.card_filter_add_card_filter_not
       (s := Finset.range L) (fun n => ω (d.a y n) = d.s y ω)
     rw [Finset.card_range] at hsplit
     have hle := Finset.single_le_sum (f := fun y => {n | ω (d.a y n) ≠ d.s y ω}.ncard)
       (fun _ _ => Nat.zero_le _) hy
     have hEA : ∑ j : (Σ i, Fin (m i)), (P j.1).E.card ≤ A.card := by
-      show _ ≤ ((Finset.range L).filter fun n => ω (d.a y n) = d.s y ω).card
+      change _ ≤ ((Finset.range L).filter fun n => ω (d.a y n) = d.s y ω).card
       omega
     calc k * ⨅ η : V → Bool, ∑ i, (ρ i : ℝ≥0∞) *
           extCost (P i).S (P i).E (W.piecewise η (forced X d.s ω))

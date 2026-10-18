@@ -31,7 +31,6 @@ structure ForcingData (G : SimpleGraph V) (C : ℝ≥0) (M X : Set V)
   a : V → ℕ → V
   injective : ∀ y ∈ X, Function.Injective (a y)
   adj_mem : ∀ y ∈ X, ∀ n, G.Adj y (a y n) ∧ a y n ∈ M
-  dependsOn : ∀ y ∈ X, DependsOn (s y) (Set.range (a y))
   measurable : ∀ y ∈ X, Measurable (s y)
   ae_finite : ∀ y ∈ X, ∀ᵐ ω ∂ν, {n | ω (a y n) ≠ s y ω}.Finite
   sum_le : ∀ y ∈ X, ∀ B : Finset V, ↑B ⊆ {u | G.Adj y u ∧ u ∈ M} →
@@ -55,14 +54,13 @@ theorem exists_forcingData {G : SimpleGraph V} {C : ℝ≥0} {M X : Set V}
     a := fun y => if h : y ∈ X then (hD y h).choose_spec.choose else fun _ => y
     injective := fun y hy => ?_
     adj_mem := fun y hy => ?_
-    dependsOn := fun y hy => ?_
     measurable := fun y hy => ?_
     ae_finite := fun y hy => ?_
     sum_le := fun y hy => ?_ }⟩ <;>
   simp only [dite_eq_left hy]
   exacts [(hD y hy).choose_spec.choose_spec.1, (hD y hy).choose_spec.choose_spec.2.1,
-    (hD y hy).choose_spec.choose_spec.2.2.1, (hD y hy).choose_spec.choose_spec.2.2.2.1,
-    (hD y hy).choose_spec.choose_spec.2.2.2.2.1, (hD y hy).choose_spec.choose_spec.2.2.2.2.2]
+    (hD y hy).choose_spec.choose_spec.2.2.2.1, (hD y hy).choose_spec.choose_spec.2.2.2.2.1,
+    (hD y hy).choose_spec.choose_spec.2.2.2.2.2]
 
 /-- The forcing map: each `y ∈ X` takes the opposite of its derived sign. -/
 noncomputable def forced (X : Set V) (s : V → (V → Bool) → Bool) (ω : V → Bool) :

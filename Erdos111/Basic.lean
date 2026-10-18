@@ -153,12 +153,6 @@ theorem extCost_le_monoCount (S : Finset V) (E : Finset (Sym2 V)) (τ η : V →
     extCost S E τ ≤ monoCount E (S.piecewise η τ) :=
   ciInf_le (OrderBot.bddBelow _) η
 
-/-- The monochromatic count is additive over disjoint edge sets. -/
-theorem monoCount_union {E F : Finset (Sym2 V)} (h : Disjoint E F) (τ : V → Bool) :
-    monoCount (E ∪ F) τ = monoCount E τ + monoCount F τ := by
-  rw [monoCount, Finset.filter_union,
-    Finset.card_union_of_disjoint (Finset.disjoint_filter_filter h), monoCount, monoCount]
-
 /-- A linear graph satisfies `J` over the empty set, for every probability law: a pattern
 with no roots costs at most `C |S|` whatever the signs. -/
 theorem rooted_empty {G : SimpleGraph V} {C : ℝ≥0} (hG : Linear G C)
@@ -216,11 +210,6 @@ theorem TraceBound.of_sameOn {C : ℝ≥0} {A T : Set V} {v : V}
       h _ hJ]
   rw [Finset.sum_congr rfl key]
   exact hμ B hB
-
-/-- Agreement of finite marginals is symmetric. -/
-theorem SameOn.symm {A : Set V} {μ ν : Measure (V → Bool)} (h : SameOn A μ ν) :
-    SameOn A ν μ :=
-  fun J hJ => (h J hJ).symm
 
 /-- Agreement of finite marginals is transitive. -/
 theorem SameOn.trans {A : Set V} {μ ν ρ : Measure (V → Bool)} (h₁ : SameOn A μ ν)
