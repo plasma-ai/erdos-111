@@ -82,14 +82,12 @@ related_formalizations:
     note: >-
       An open pull request, unmerged on 2026-10-17, that states Problem 111
       without a proof. Its h_G maximizes over induced subgraphs.
-      Challenge.lean neither imports nor copies it.
   - id: "https://github.com/google-deepmind/formal-conjectures/pull/6635"
     relationship: "independent"
     note: >-
       An open pull request, unmerged on 2026-10-17, that states Problem 111
-      without a proof. Challenge.lean neither imports nor copies it.
-      erdos_111, for vertex types in Type, implies its statement, as checked
-      in Lean.
+      without a proof. erdos_111, for vertex types in Type, implies its
+      statement, as checked in Lean.
 
 status:
   scope: >-
@@ -152,8 +150,8 @@ automation:
         every module with its statements, and the final assembly, and
         reviewed and integrated the proofs. Parallel subagents wrote the
         proofs; one skeleton statement found false by a subagent was
-        corrected. The blueprint, blueprint/proof.md, was written with Claude
-        Code from Plasma AI's unpublished write-up of the proof.
+        corrected. Claude Opus 5.5 in Claude Code wrote the blueprint,
+        blueprint/proof.md, from Plasma AI's unpublished write-up of the proof.
   notes: >-
     GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code found the proof.
     Claude Opus 5.5 produced the Lean formalization in Claude Code under
