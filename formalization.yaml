@@ -151,7 +151,7 @@ automation:
         reviewed and integrated the proofs. Parallel subagents wrote the
         proofs; one skeleton statement found false by a subagent was
         corrected. Claude Opus 5.5 in Claude Code wrote the blueprint,
-        blueprint/proof.md, from Plasma AI's unpublished write-up of the proof.
+        blueprint/proof.md, from Plasma AI's write-up of the proof.
   notes: >-
     GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code found the proof.
     Claude Opus 5.5 produced the Lean formalization in Claude Code under
@@ -180,10 +180,10 @@ fidelity:
     and erdos_111, for vertex types in Type, implies the statement of
     formal-conjectures pull request #6635; these agreements were checked in
     Lean. The Lean proof follows the route of the blueprint, which reorganizes
-    the argument of Plasma AI's unpublished write-up with the simplifications
-    listed in blueprint §7: closure chains instead of elementary submodels,
-    and ultrafilter limits of finite-dimensional marginals instead of
-    weak-star compactness.
+    the argument of Plasma AI's write-up with the simplifications listed in
+    blueprint §7: closure chains instead of elementary submodels, and
+    ultrafilter limits of finite-dimensional marginals instead of weak-star
+    compactness.
 
 review:
   status: "self-assessed"

@@ -4,8 +4,8 @@ This document proves, in prose, the three theorems that Comparator checks,
 following the Lean development module by module. Each section names the module
 and the Lean declarations it describes. The argument is Plasma AI's. This
 document was written by Claude Opus 5.5 in Claude Code from Plasma AI's
-unpublished write-up of the proof, which the rest of it calls the original
-argument; §7 lists how the two differ.
+write-up of the proof, which the rest of it calls the original argument; §7
+lists how the two differ.
 
 **Conventions.** Graphs are simple. A *sign assignment* is `σ : V → Bool`; an
 edge is *monochromatic* under `σ` when its two ends get the same sign. For a
