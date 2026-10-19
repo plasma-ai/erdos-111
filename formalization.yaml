@@ -191,7 +191,7 @@ review:
   notes: >-
     The human project lead checked the statements in Challenge.lean against
     the problem and confirmed that they formalize the claimed result. The
-    development builds on Lean v4.35.0, and the three compared theorems
+    development builds on Lean v4.35.0-rc3, and the three compared theorems
     depend only on propext, Classical.choice, and Quot.sound. Comparator,
     from the toolchain's lake comparator, accepts them against
     Challenge.lean with the Lean, NanoDa and con-ron kernels. It ran on macOS
