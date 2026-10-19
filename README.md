@@ -8,7 +8,7 @@ This Lean 4 project concerns [Erdős Problem 111](https://www.erdosproblems.com/
 
 The divergence is of the whole sequence, not along a subsequence. No rate comes with it.
 
-The proof is Plasma AI's. Two AI models found it, working in alternating steps: GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code. Claude Opus 5.5 wrote the complete proof, and GPT-6 Astra then checked it and revised it, making its measure-theoretic and limit arguments explicit. An internal independent review and a separate grade, both by GPT-6 Astra, passed the argument. The [blueprint](blueprint/proof.md), written by Claude Opus 5.5 in Claude Code from Plasma AI's unpublished write-up of the proof, states it in prose, following the Lean development module by module. Claude Opus 5.5 wrote the Lean formalization in Claude Code under human direction, and the project lead checked the statements in `Challenge.lean` against the problem. `formalization.yaml` records the role of each model.
+The proof is Plasma AI's. Two AI models found it, working in alternating steps: GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code. Claude Opus 5.5 wrote the complete proof, and GPT-6 Astra then checked it and revised it, making its measure-theoretic and limit arguments explicit. An internal independent review and a separate grade, both by GPT-6 Astra, passed the argument. The [blueprint](blueprint/proof.md), written by Claude Opus 5.5 in Claude Code from Plasma AI's write-up of the proof, states it in prose, following the Lean development module by module. Claude Opus 5.5 wrote the Lean formalization in Claude Code under human direction, and the project lead checked the statements in `Challenge.lean` against the problem. `formalization.yaml` records the role of each model.
 
 ## The argument
 
@@ -67,7 +67,7 @@ The proof development lives under `Erdos111/` and depends on Mathlib only:
 - `HilbertClasses.lean` proves the countable partition of unit vectors (Proposition C). `Greedy.lean` proves greedy coloring along a well-founded order. `Coloring.lean` proves Lemma T and the theorem by induction on cardinality.
 - `FinalAssembly.lean` assembles the three compared theorems.
 
-`blueprint/proof.md` proves the three compared theorems in prose, section by section along the Lean development, and records how its route differs from Plasma AI's unpublished write-up.
+`blueprint/proof.md` proves the three compared theorems in prose, section by section along the Lean development, and records how its route differs from Plasma AI's write-up.
 
 Every Lean file uses the module system: it begins with `module`, imports with `public import`, and exposes its definitions with `@[expose] public section`. No file imports all of Mathlib.
 
