@@ -1,20 +1,20 @@
 # Erdős Problem 111: bipartizing finite subgraphs of uncountably chromatic graphs
 
-This Lean 4 project concerns [Erdős Problem 111](https://www.erdosproblems.com/111), as cataloged by Thomas F. Bloom. For a graph `G`, let `h_G(n)` be the least number such that every subgraph of `G` on `n` vertices can be made bipartite by deleting at most `h_G(n)` edges. Erdős asked for the behaviour of `h_G(n)`, and whether `h_G(n) / n → ∞` for every graph `G` of chromatic number `ℵ₁`. We prove:
+This Lean 4 project concerns [Erdős Problem 111](https://www.erdosproblems.com/111), as cataloged by Thomas F. Bloom. For a graph `G`, let `h_G(n)` be the least number such that every subgraph of `G` on `n` vertices can be made bipartite by deleting at most `h_G(n)` edges. Erdős, Hajnal and Szemerédi asked for the behaviour of `h_G(n)`, and whether `h_G(n) / n → ∞` for every graph `G` of chromatic number `ℵ₁`. We prove:
 
-**Theorem.** For every `C ≥ 0`, a graph in which every finite subgraph on `m` vertices can be made bipartite by deleting at most `C m` edges has countable chromatic number.
+**Theorem.** For every real `C` (vacuous for `C < 0`), a graph in which every finite subgraph on `m` vertices can be made bipartite by deleting at most `C m` edges has countable chromatic number.
 
 **Corollary.** `h_G(n) / n → ∞` for every graph `G` that is not countably colorable, of any cardinality. In particular this holds for every graph of chromatic number `ℵ₁`, which answers the second question of the problem in the affirmative.
 
 The divergence is of the whole sequence, not along a subsequence. No rate comes with it.
 
-The proof is Plasma AI's. The [blueprint](blueprint/proof.md) states it in prose, following the Lean development module by module.
+The proof is Plasma AI's. Two AI models found it, working in alternating steps: GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code. Claude Opus 5.5 wrote the complete proof, and GPT-6 Astra then checked it and revised it, making its measure-theoretic and limit arguments explicit. An internal independent review and a separate grade, both by GPT-6 Astra, passed the argument. The [blueprint](blueprint/proof.md), written by Claude Opus 5.5 in Claude Code from Plasma AI's unpublished write-up of the proof, states it in prose, following the Lean development module by module. Claude Opus 5.5 wrote the Lean formalization in Claude Code under human direction, and the project lead checked the statements in `Challenge.lean` against the problem. `formalization.yaml` records the role of each model.
 
 ## The argument
 
-**Reduction.** Call `G` `C`-linear if every finite edge set of `G` whose ends lie in a vertex set `s` can be made bipartite by deleting at most `C |s|` of its edges. Suppose `G` is not countably colorable and fix `K`. Take a maximal family of pairwise disjoint finite subgraphs, each needing more than `2 K` deletions per vertex. If the family were countable, deleting its vertices would leave a `2 K`-linear graph. By the theorem that graph is countably colorable, so `G` would be too. Hence the family is uncountable, and infinitely many of its members share one size and one cost. Packing `⌊n / v⌋` of them into `n` vertices gives `h_G(n) > K n` for all large `n`.
+**Reduction.** Call `G` `C`-linear if every finite edge set of `G` whose ends lie in a finite vertex set `s` can be made bipartite by deleting at most `C |s|` of its edges. Suppose `G` is not countably colorable and fix `K`. Take a maximal family of pairwise disjoint finite subgraphs, each needing more than `2 K` deletions per vertex. If the family were countable, deleting its vertices would leave a `2 K`-linear graph. By the theorem that graph is countably colorable, so `G` would be too. Hence the family is uncountable, and infinitely many of its members share one size and one cost. Packing `⌊n / v⌋` of them into `n` vertices gives `h_G(n) > K n` for all large `n`.
 
-**The theorem.** The theorem is proved by induction on the number of vertices. For an uncountable vertex set, take a continuous chain of vertex sets `N_ξ`, indexed by the ordinals below the initial ordinal of `#V`. The chain starts from `∅`, each set has fewer than `#V` vertices, and it covers `V`. Each successor set is closed over its predecessor in a finitary sense: every finite configuration hanging off finitely many roots in `N_{ξ+1}`, outside `N_ξ`, has a copy over the same roots inside `N_{ξ+1}`. A vertex enters the chain in one layer, and its trace is its set of neighbours in earlier sets.
+**The theorem.** The theorem is proved by induction on the number of vertices. For an uncountable vertex set, take a continuous chain of vertex sets `N_ξ`, indexed by ordinals. The chain starts from `∅`, each set `N_ξ` with `ξ` below the initial ordinal of `#V` has fewer than `#V` vertices, and these sets cover `V`. Each successor set is closed over its predecessor in a finitary sense: every finite configuration hanging off finitely many roots in `N_{ξ+1}`, outside `N_ξ`, has a copy over the same roots inside `N_{ξ+1} \ N_ξ`, which also avoids any given finite set that the configuration avoids. A vertex enters the chain in one layer, and its trace is its set of neighbours in earlier sets.
 
 Signs `σ : V → Bool` are drawn at random, and laws on `V → Bool` are built along the chain:
 
@@ -27,7 +27,7 @@ In the final law, every vertex `v` with infinite trace has `∑_{u ∈ trace v} 
 
 ## Literature and scope
 
-The question appears in [Er81] (P. Erdős, *On the combinatorial problems which I would most like to see solved*, Combinatorica 1 (1981), 25–42) and [EHS82] (P. Erdős, A. Hajnal and E. Szemerédi, *On almost bipartite large chromatic graphs*, Annals of Discrete Mathematics 12 (1982), 117–123). Every graph of chromatic number `ℵ₁` has `h_G(n) ≫ n`, because it contains arbitrarily many vertex-disjoint odd cycles of one length. Erdős, Hajnal and Szemerédi constructed graphs of arbitrarily large chromatic number with `h_G(n) ≤ 2 n^{3/2}` (Theorem 3 of [EHS82]). In [Er81] Erdős conjectured that for a graph of chromatic number `ℵ₁` the bound can be lowered to `n^{1+ε}` for every `ε > 0`. The finite-density reformulation in the reduction above is also stated in Section 2 of the [Erdős Problem a Day report](https://www.erdosproblemaday.com/report/111) (26 July 2026). The argument here does not rely on it.
+In [Er81] (P. Erdős, *On the combinatorial problems which I would most like to see solved*, Combinatorica 1 (1981), 25–42), Erdős poses, as a problem of Hajnal, Szemerédi and himself, the finite-density form of the question: if `G` has chromatic number at least `ℵ₁`, then for every `c` some finite subgraph of `G`, on `m` vertices say, cannot be made bipartite by deleting `c m` edges. The theorem above is the contrapositive of this form, and `tendsto_of_not_countably_colorable` has the same hypothesis with a stronger conclusion. [Er81] also records the belief of all three that for every `ε > 0` some graph of chromatic number `ℵ₁` has `h_G(n) ≤ n^{1+ε}`. [EHS82] (P. Erdős, A. Hajnal and E. Szemerédi, *On almost bipartite large chromatic graphs*, Annals of Discrete Mathematics 12 (1982), 117–123) defines `h_G` (Definition 3.1), derives `h_G(n) ≫ n` for every graph of chromatic number `ℵ₁`, because it contains arbitrarily many vertex-disjoint odd cycles of one length, and constructs graphs of arbitrarily large chromatic number with `h_G(n) ≤ 2 n^{3/2}` (Theorem 3). The limit conjecture, `h_G(n) / n → ∞` for every graph of chromatic number `ℵ₁`, is stated in [Er87] (P. Erdős, *Some problems on finite and infinite graphs*, Contemporary Mathematics 65 (1987), 223–228, Problem 7). For graphs of chromatic number `ℵ₁`, the reduction of the limit to the finite-density form, by countable deletion and packing, is also proved in Section 2 of the [Erdős Problem a Day report](https://www.erdosproblemaday.com/report/111) (26 July 2026). The argument here, which covers every graph that is not countably colorable, does not rely on it.
 
 To our knowledge, the theorem above and its consequence for Problem 111 have not been proved before. On October 17, 2026:
 
@@ -35,13 +35,15 @@ To our knowledge, the theorem above and its consequence for Problem 111 have not
 - A search of arXiv and the web found no proof.
 - [`formal-conjectures`](https://github.com/google-deepmind/formal-conjectures) had no statement of the problem on its main branch, and two open pull requests ([#3785](https://github.com/google-deepmind/formal-conjectures/pull/3785) and [#6635](https://github.com/google-deepmind/formal-conjectures/pull/6635)) that state it without a proof.
 
+The definitions of `Challenge.lean` agree with those of `formal-conjectures`: `h` equals its `maxSubgraphEdgeDistToBipartite` and `chromaticCardinal` equals its `chromaticCardinal`, at commit `7db2ea3b91`. Hence `erdos_111`, for vertex types in `Type`, implies the statement of #6635. These agreements were checked in Lean.
+
 The first question, the exact behaviour of `h_G(n)`, is open-ended and is not addressed beyond the divergence.
 
 ## Publication layout
 
 `Challenge.lean` states the results using only Mathlib imports. Its three `sorry` proofs are deliberate: this file contains the statements to audit.
 
-- `bipartizationNumber H` is the least number of edges of a subgraph `H` whose deletion leaves it bipartite (`IsBipartite`).
+- `bipartizationNumber H` is the least number of edges of a subgraph `H` whose deletion leaves it bipartite (`IsBipartite`), for `H` with finitely many vertices. The statements use no other case; for a subgraph with infinitely many edges the value is `0`, because `Set.ncard` of an infinite set is `0`.
 - `h G n` is the supremum of `bipartizationNumber H` over subgraphs `H` of `G` on `n` vertices.
 - `chromaticCardinal G` is the least cardinality of a color set that properly colors `G`.
 
@@ -65,7 +67,9 @@ The proof development lives under `Erdos111/` and depends on Mathlib only:
 - `HilbertClasses.lean` proves the countable partition of unit vectors (Proposition C). `Greedy.lean` proves greedy coloring along a well-founded order. `Coloring.lean` proves Lemma T and the theorem by induction on cardinality.
 - `FinalAssembly.lean` assembles the three compared theorems.
 
-Every Lean file uses the module system: it begins with `module`, imports with `public import`, and exposes its definitions with `@[expose] public section`.
+`blueprint/proof.md` proves the three compared theorems in prose, section by section along the Lean development, and records how its route differs from Plasma AI's unpublished write-up.
+
+Every Lean file uses the module system: it begins with `module`, imports with `public import`, and exposes its definitions with `@[expose] public section`. No file imports all of Mathlib.
 
 `formalization.yaml` records the mathematical sources, authorship, AI use, source fidelity, and review status for a registry submission.
 

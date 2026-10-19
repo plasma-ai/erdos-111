@@ -12,16 +12,16 @@ public import Mathlib.SetTheory.Cardinal.Aleph
 # Erdős Problem 111: bipartizing finite subgraphs of uncountably chromatic graphs
 
 For a graph `G`, let `h G n` be the least bound such that every subgraph of `G`
-on `n` vertices can be made bipartite by deleting at most `h G n` edges. Erdős
-asked for the behaviour of `h G n`, and whether `h G n / n → ∞` for every graph
-`G` of chromatic number `ℵ₁`.
+on `n` vertices can be made bipartite by deleting at most `h G n` edges. Erdős,
+Hajnal and Szemerédi asked for the behaviour of `h G n`, and whether
+`h G n / n → ∞` for every graph `G` of chromatic number `ℵ₁`.
 
-**Claim.** For every `C ≥ 0`, a graph in which every finite subgraph on `m`
-vertices can be made bipartite by deleting at most `C m` edges has countable
-chromatic number. Hence `h G n / n → ∞` for every graph `G` that is not
-countably colorable, of any cardinality, and in particular for every graph of
-chromatic number `ℵ₁`. This answers the second question of Erdős Problem 111
-in the affirmative.
+**Claim.** For every real `C` (vacuous for `C < 0`), a graph in which every
+finite subgraph on `m` vertices can be made bipartite by deleting at most `C m`
+edges has countable chromatic number. Hence `h G n / n → ∞` for every graph
+`G` that is not countably colorable, of any cardinality, and in particular for
+every graph of chromatic number `ℵ₁`. This answers the second question of
+Erdős Problem 111 in the affirmative.
 
 Thomas F. Bloom catalogs the question as
 [Erdős Problem 111](https://www.erdosproblems.com/111).
@@ -39,7 +39,8 @@ universe u
 
 namespace Erdos111
 
-/-- The least number of edges whose deletion leaves the subgraph `H` bipartite. -/
+/-- The least number of edges whose deletion leaves the subgraph `H` bipartite, for `H`
+with finitely many vertices (the only case used below). -/
 noncomputable def bipartizationNumber {V : Type*} {G : SimpleGraph V} (H : G.Subgraph) : ℕ :=
   sInf {k : ℕ | ∃ D ⊆ H.edgeSet, D.ncard = k ∧ (H.deleteEdges D).coe.IsBipartite}
 

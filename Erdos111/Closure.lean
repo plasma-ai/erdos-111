@@ -113,7 +113,7 @@ end Closure
 
 open Closure in
 /-- Every `M ∪ X` lies in a set closed over `M` of size at most `max (#M + #X) ℵ₀`. -/
-theorem exists_closedOver {V : Type*} (G : SimpleGraph V) (M X : Set V) :
+theorem exists_closedOver (G : SimpleGraph V) (M X : Set V) :
     ∃ N : Set V, M ∪ X ⊆ N ∧ ClosedOver G M N ∧ #N ≤ max (#M + #X) ℵ₀ := by
   classical
   have hκ : ℵ₀ ≤ max (#M + #X) ℵ₀ := le_max_right _ _

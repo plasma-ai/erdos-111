@@ -11,9 +11,10 @@ The unit vectors of a real Hilbert space fall into countably many classes such t
 two vectors `x, y` of one class satisfy `1 + ⟪x, y⟫ ≥ η > 0` for a constant `η` of the
 class. Choose a Hilbert basis. For rationals `0 < b < a`, a unit vector whose coordinates
 of magnitude at least `a` form a nonempty set `S`, all others having magnitude at most
-`b`, is classified by `(a, b)` and the sign of its coordinate at the least element of
-`S`. Two vectors of one class differ in their supports, giving `‖x + y‖ ≥ a - b`, or
-share the sign of a coordinate of magnitude at least `a`, giving `‖x + y‖ ≥ 2a`.
+`b`, is classified by `(a, b)` and the sign of its coordinate at an element of `S` chosen
+by `Classical.epsilon`, a choice that depends only on `S`. Two vectors of one class differ
+in their supports, giving `‖x + y‖ ≥ a - b`, or share the sign of a coordinate of
+magnitude at least `a`, giving `‖x + y‖ ≥ 2a`.
 
 Applied to the signs `±1` of a law in `L²`, this gives countably many classes of vertices
 within which any two signs agree with probability bounded below.
@@ -103,7 +104,7 @@ theorem exists_unitVector_classes (E : Type*) [NormedAddCommGroup E] [InnerProdu
   refine ⟨fun x => Encodable.encode
       (q x, decide (0 < ⟪b (Classical.epsilon fun i => ((q x).1 : ℝ) ≤ |⟪b i, x⟫|), x⟫)),
     fun n => (Encodable.decode n).elim 1 g, fun n => ?_, fun x y hx hy hxy => ?_⟩
-  · show 0 < (Encodable.decode n).elim 1 g
+  · change 0 < (Encodable.decode n).elim 1 g
     rcases Encodable.decode n with _ | k
     · exact one_pos
     · simp only [Option.elim, g]
@@ -128,7 +129,7 @@ theorem exists_unitVector_classes (E : Type*) [NormedAddCommGroup E] [InnerProdu
         funext fun i => propext (hS i)
       rw [← he] at hsign
       set i₀ := Classical.epsilon fun i => (p.1 : ℝ) ≤ |⟪b i, x⟫|
-      have hx0 : (p.1 : ℝ) ≤ |⟪b i₀, x⟫| := 
+      have hx0 : (p.1 : ℝ) ≤ |⟪b i₀, x⟫| :=
         Classical.epsilon_spec (p := fun i => (p.1 : ℝ) ≤ |⟪b i, x⟫|) ⟨i₁, hi₁⟩
       have hy0 := (hS i₀).1 hx0
       refine ⟨i₀, ?_⟩
